@@ -1,15 +1,21 @@
 import { evaluate } from "./interpreter";
 import { tokenize } from "./lexer";
+import { stringifyElement } from "./stringify";
 import Parser from "./parser";
 
-function parseJSON(text: string) {
+function parse(text: string) {
   const tokens = tokenize(text);
   const parser = new Parser(tokens);
-  console.log({ tokens });
   const ast = parser.produceAST();
-  console.log({ ast });
   const result = evaluate(ast);
   return result;
 }
 
-export default parseJSON;
+function stringify(value: unknown) {
+  return stringifyElement(value);
+}
+
+export default {
+  parse,
+  stringify,
+};
