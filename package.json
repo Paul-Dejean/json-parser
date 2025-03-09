@@ -1,12 +1,28 @@
 {
-  "name": "json-parser",
-  "version": "1.0.0",
+  "name": "@paul-dejean/json-parser",
+  "version": "1.0.1",
   "description": "A JSON parser written in typescript",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "lint": "eslint",
     "lint:fix": "eslint --fix",
-    "test": "jest"
+    "test": "jest",
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "json",
+    "parser",
+    "stringify",
+    "typescript"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Paul-Dejean/json-parser.git"
   },
   "author": "Paul Dejean",
   "license": "MIT",

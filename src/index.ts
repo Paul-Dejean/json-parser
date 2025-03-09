@@ -3,7 +3,7 @@ import { tokenize } from "./lexer";
 import { stringifyElement } from "./stringify";
 import Parser from "./parser";
 
-function parse(text: string) {
+export function parse(text: string) {
   const tokens = tokenize(text);
   const parser = new Parser(tokens);
   const ast = parser.produceAST();
@@ -11,7 +11,7 @@ function parse(text: string) {
   return result;
 }
 
-function stringify(value: unknown) {
+export function stringify(value: unknown) {
   return stringifyElement(value);
 }
 
@@ -19,3 +19,5 @@ export default {
   parse,
   stringify,
 };
+
+JSON.parse('{"name": "John"}');
