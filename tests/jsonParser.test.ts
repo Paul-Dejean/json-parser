@@ -70,4 +70,124 @@ describe("JSON parser", () => {
     const text = `{"address": null}`;
     expect(parseJSON(text)).toEqual({ address: null });
   });
+
+  test("should be able to parse json object with key value pair where value is an array", () => {
+    const text = `{"grades": [90, 80, 70]}`;
+    expect(parseJSON(text)).toEqual({ grades: [90, 80, 70] });
+  });
+
+  test("should be able to parse json object with nested objects", () => {
+    const text = `{"address": {"city": "New York", "country": "USA"}}`;
+    expect(parseJSON(text)).toEqual({ address: { city: "New York", country: "USA" } });
+  });
+
+  test("should be able to parse json array", () => {
+    const text = `[90, 80, 70]`;
+    expect(parseJSON(text)).toEqual([90, 80, 70]);
+  });
+
+  test("should be able to parse json string", () => {
+    const text = `"hello"`;
+    expect(parseJSON(text)).toEqual("hello");
+  });
+
+  test("should be able to parse json object with nested arrays", () => {
+    const text = `{"grades": [[90, 80], [70, 60]]}`;
+    expect(parseJSON(text)).toEqual({
+      grades: [
+        [90, 80],
+        [70, 60],
+      ],
+    });
+  });
+
+  test("should be able to parse json object with nested objects and arrays", () => {
+    const text = `{"student": {"name": "John", "grades": [90, 80, 70]}}`;
+    expect(parseJSON(text)).toEqual({
+      student: {
+        name: "John",
+        grades: [90, 80, 70],
+      },
+    });
+  });
+
+  test("should be able to parse json object with nested objects and arrays", () => {
+    const text = `{"student": {"name": "John", "grades": [90, 80, 70]}}`;
+    expect(parseJSON(text)).toEqual({
+      student: {
+        name: "John",
+        grades: [90, 80, 70],
+      },
+    });
+  });
+
+  test("should be able to parse json object with nested objects and arrays", () => {
+    const text = `{"student": {"name": {"firstname": "John", "lastname": "Doe"}, "grades": [{"score": 90}, {"score": 80}, {"score": 70}]}}`;
+    expect(parseJSON(text)).toEqual({
+      student: {
+        name: { firstname: "John", lastname: "Doe" },
+        grades: [
+          {
+            score: 90,
+          },
+          {
+            score: 80,
+          },
+          {
+            score: 70,
+          },
+        ],
+      },
+    });
+  });
+
+  test("should be able to parse a reaaly complex json object", () => {
+    const text = `{
+      "user": {
+        "name": {
+          "firstname": "John",
+          "lastname": "Doe"
+        },
+        "isStudent": true,
+        "isGraduated": false,
+        "address": null,
+        "grades": [
+          {
+            "subject": "math",
+            "score": 90
+          },
+          {
+            "subject": "science",
+            "score": 80
+          },
+          {
+            "subject": "history",
+            "score": 70
+          }
+        ]
+      }
+    }`;
+    expect(parseJSON(text)).toEqual({
+      user: {
+        name: { firstname: "John", lastname: "Doe" },
+        isGraduated: false,
+        isStudent: true,
+        address: null,
+        grades: [
+          {
+            subject: "math",
+            score: 90,
+          },
+          {
+            subject: "science",
+            score: 80,
+          },
+          {
+            subject: "history",
+            score: 70,
+          },
+        ],
+      },
+    });
+  });
 });

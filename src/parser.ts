@@ -1,4 +1,4 @@
-import { Expr, Literal, NodeType, ObjectLiteral, Property } from "./ast";
+import { ArrayLiteral, Literal, NodeType, ObjectLiteral, Property, Value } from "./ast";
 import { Token, TokenType } from "./lexer";
 
 export default class Parser {
@@ -31,6 +31,9 @@ export default class Parser {
     switch (this.peek().type) {
       case TokenType.OpenBrace:
         return this.parseObjectExpression();
+      case TokenType.OpenBracket:
+        return this.parseArrayExpression();
+
       case TokenType.String:
         return this.parseStringValue();
       default:
@@ -67,9 +70,30 @@ export default class Parser {
     return { kind: NodeType.Object, children: properties };
   }
 
-  private parseValue(): Literal {
+  private parseArrayExpression(): ArrayLiteral {
+    this.expect(TokenType.OpenBracket);
+    const children: Value[] = [];
+
+    while (!this.isEndOfFile() && this.peek().type !== TokenType.CloseBracket) {
+      const value = this.parseValue();
+      children.push(value);
+
+      if (this.peek().type !== TokenType.CloseBracket) {
+        this.expect(TokenType.Comma);
+      }
+    }
+
+    this.expect(TokenType.CloseBracket);
+    return { kind: NodeType.Array, children };
+  }
+
+  private parseValue(): Value {
     const token = this.peek();
     switch (token.type) {
+      case TokenType.OpenBrace:
+        return this.parseObjectExpression();
+      case TokenType.OpenBracket:
+        return this.parseArrayExpression();
       case TokenType.String:
         return this.parseStringValue();
       case TokenType.Number:
@@ -103,7 +127,7 @@ export default class Parser {
     return { kind: NodeType.Literal, value: null };
   }
 
-  public produceAST(): Expr {
+  public produceAST(): Value {
     const ast = this.parseExpression();
     return ast;
   }

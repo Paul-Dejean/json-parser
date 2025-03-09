@@ -1,14 +1,21 @@
 export enum NodeType {
   Object = "Object",
+  Array = "Array",
   Literal = "Literal",
   Property = "Property",
   Identifier = "Identifier",
 }
 
-export type Expr = ObjectLiteral | Literal | Property | Identifier;
+export type Expr = ObjectLiteral | Literal | Property | Identifier | ArrayLiteral;
+
 export type ObjectLiteral = {
   kind: NodeType.Object;
   children: Property[];
+};
+
+export type ArrayLiteral = {
+  kind: NodeType.Array;
+  children: Value[];
 };
 
 export type Identifier = {
@@ -24,5 +31,7 @@ export type Literal = {
 export type Property = {
   kind: NodeType.Property;
   key: Identifier;
-  value: Literal;
+  value: Value;
 };
+
+export type Value = Literal | ObjectLiteral | ArrayLiteral;
