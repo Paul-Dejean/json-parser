@@ -13,5 +13,11 @@ export default tseslint.config(
       },
     },
   },
-  prettierConfig
+  {
+    rules: {
+      eqeqeq: "error",
+      "prefer-template": "error",
+    },
+  },
+  prettierConfig,
 );
