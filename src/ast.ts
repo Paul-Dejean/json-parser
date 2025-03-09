@@ -18,7 +18,7 @@ export type Identifier = {
 
 export type Literal = {
   kind: NodeType.Literal;
-  value: string;
+  value: string | number | boolean | null;
 };
 
 export type Property = {

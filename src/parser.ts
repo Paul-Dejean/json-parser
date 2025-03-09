@@ -45,7 +45,7 @@ export default class Parser {
     while (!this.isEndOfFile() && this.peek().type !== TokenType.CloseBrace) {
       const key = this.expect(TokenType.String);
       this.expect(TokenType.Colon);
-      const value = this.parseStringValue();
+      const value = this.parseValue();
       properties.push({
         kind: NodeType.Property,
         key: {
@@ -67,9 +67,40 @@ export default class Parser {
     return { kind: NodeType.Object, children: properties };
   }
 
+  private parseValue(): Literal {
+    const token = this.peek();
+    switch (token.type) {
+      case TokenType.String:
+        return this.parseStringValue();
+      case TokenType.Number:
+        return this.parseNumberValue();
+      case TokenType.Boolean:
+        return this.parseBooleanValue();
+      case TokenType.Null:
+        return this.parseNullValue();
+      default:
+        throw new Error(`Parser error: unexpected token, got ${token.type}`);
+    }
+  }
+
   private parseStringValue(): Literal {
     const token = this.advance();
     return { kind: NodeType.Literal, value: token.value.slice(1, -1) };
+  }
+
+  private parseNumberValue(): Literal {
+    const token = this.advance();
+    return { kind: NodeType.Literal, value: parseFloat(token.value) };
+  }
+
+  private parseBooleanValue(): Literal {
+    const token = this.advance();
+    return { kind: NodeType.Literal, value: token.value === "true" };
+  }
+
+  private parseNullValue(): Literal {
+    this.advance();
+    return { kind: NodeType.Literal, value: null };
   }
 
   public produceAST(): Expr {

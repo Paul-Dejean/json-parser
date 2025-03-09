@@ -45,4 +45,29 @@ describe("JSON parser", () => {
     const text = `{ "name":        "John" }`;
     expect(parseJSON(text)).toEqual({ name: "John" });
   });
+
+  test("should throw an error if a key of the object is not a string", () => {
+    const text = `{true: "John"}`;
+    expect(() => parseJSON(text)).toThrow();
+  });
+
+  test("should be able to parse json object with key value pair where value is a number", () => {
+    const text = `{"age": 20}`;
+    expect(parseJSON(text)).toEqual({ age: 20 });
+  });
+
+  test("should be able to parse json object with key value pair where value is true", () => {
+    const text = `{"isStudent": true}`;
+    expect(parseJSON(text)).toEqual({ isStudent: true });
+  });
+
+  test("should be able to parse json object with key value pair where value is false", () => {
+    const text = `{"isStudent": false}`;
+    expect(parseJSON(text)).toEqual({ isStudent: false });
+  });
+
+  test("should be able to parse json object with key value pair where value is null", () => {
+    const text = `{"address": null}`;
+    expect(parseJSON(text)).toEqual({ address: null });
+  });
 });
